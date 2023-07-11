@@ -20,10 +20,10 @@ class RemoteEnv(BaseEnv):
         # GNU env has a -0 argument; use it if present. Otherwise,
         # fall back to calling printenv on each (possible) variable
         # from plain env.
-        env0 = session.run("env -0; echo")
+        env0 = session.run("env; echo")
         if env0[0] == 0 and not env0[2].rstrip():
             _curr = dict(
-                line.split("=", 1) for line in env0[1].split("\x00") if "=" in line
+                line.split("=", 1) for line in env0[1].split("\n") if "=" in line
             )
         else:
             lines = session.run("env; echo")[1].splitlines()
